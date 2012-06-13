@@ -19,6 +19,9 @@ define(["./AbstractButtonBarView", "model/editor/button_bar/ButtonBarModel", "mo
     createSlide: function() {
       return this.deck.newSlide();
     },
+    createFrame: function() {
+      return this.$el.find("input")[0].click();
+    },
     textBox: function() {
       var activeSlide;
       activeSlide = this.deck.get("activeSlide");
@@ -71,12 +74,21 @@ define(["./AbstractButtonBarView", "model/editor/button_bar/ButtonBarModel", "mo
       };
     },
     initialize: function() {
+      var _this = this;
       AbstractButtonBarView.prototype.initialize.call(this, buttonBarOptions);
       this.deck = this.options.deck;
       this.deck.on("change:activeSlide", this.activeSlideChanged, this);
       this.model = new ButtonBarModel();
       this.model.on("change:fontSize", this._fontSizeChanged, this);
-      return this.model.on("change:fontFamily", this._fontFamilyChanged, this);
+      this.model.on("change:fontFamily", this._fontFamilyChanged, this);
+      return this.$el.find("input")[0].addEventListener('change', function(e) {
+        var img, slide, src;
+        slide = _this.deck.newSlide();
+        src = "images/" + e.target.files[0].name;
+        img = ComponentFactory.createImage(_this.model.imgConfig(src));
+        slide.add(img);
+        return e.target.value = "";
+      }, false);
     },
     _fontFamilyChanged: function(model, value) {
       value = value.substr(value.indexOf("'") + 1, value.lastIndexOf("'") - 1);

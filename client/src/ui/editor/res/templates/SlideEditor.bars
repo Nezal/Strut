@@ -2,9 +2,10 @@
   <div class="navbar-inner buttonBar">
     <div class="container">
     	<ul class="nav">
-            <li style="width: 120px">
-            	<div class="btn-group iconBtns newSlide">
-            		<a class="btn btn btn-small menuBarOption" data-option="createSlide" href="#"><i class="icon-plus"></i>Slide</a>
+            <li style="width: 140px">
+            	<div class="btn-group iconBtns">
+            		<a class="btn btn-small menuBarOption" data-option="createSlide" href="#"><i class="icon-plus"></i>Slide</a>
+            		<a class="btn btn-small menuBarOption" data-option="createFrame" href="#"><i class="icon-plus"></i>Frame</a>
             	</div>
             </li>
             <li class="divider-vertical">
