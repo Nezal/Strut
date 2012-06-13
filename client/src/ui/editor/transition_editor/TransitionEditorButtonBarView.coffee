@@ -2,6 +2,21 @@ define(["../button_bar/AbstractButtonBarView",
 		"common/Math2"],
 (AbstractButtonBarView, Math2) ->
 	buttonBarOptions =
+		x: (e) ->
+			val = parseFloat(e.target.value)
+			if not isNaN(val)
+				@model.changeSlidePosition(val)
+
+		y: (e) ->
+			val = parseFloat(e.target.value)
+			if not isNaN(val)
+				@model.changeSlidePosition(null, val)
+
+		z: (e) ->
+			val = parseFloat(e.target.value)
+			if not isNaN(val)
+				@model.changeSlidePosition(null, null, val)
+
 		rotateX: (e) ->
 			val = parseFloat(e.target.value)
 			if not isNaN(val)
@@ -55,21 +70,37 @@ define(["../button_bar/AbstractButtonBarView",
 
 		initialize: () ->
 			AbstractButtonBarView.prototype.initialize.call(@, buttonBarOptions)
+			@model.on("change:slidePosition", @_slidePositionChanged, @)
 			@model.on("change:slideRotations", @_slideRotationsChanged, @)
 
+		_slidePositionChanged: (model, slidePosition) ->
+			@partialRender(slidePosition)
+
 		_slideRotationsChanged: (model, slideRotations) ->
-			@partialRender(slideRotations)
+			@partialRender(null, slideRotations)
 
 		clicked: (e) ->
 			e.stopPropagation()
 			false
 
-		partialRender: (slideRotations, sceneRotations) ->
+		partialRender: (slidePosition, slideRotations, sceneRotations) ->
+			slidePosition or (slidePosition = @model.slidePosition())
+			if slidePosition?
+				@updatePositionControls(@$slidePosCtrls, slidePosition)
+				
 			slideRotations or (slideRotations = @model.slideRotations())
 			if slideRotations?
 				@updateRotationControls(@$slideRotCtrls, slideRotations)
 
 			#sceneRotations or (sceneRotations = @model.sceneRotations())
+
+		updatePositionControls: ($which, position) ->
+			$which.each((idx, elem) ->
+				val = position[idx]
+				if not val? or isNaN(val)
+					val = 0
+				$(elem).val(val)
+			)
 
 		updateRotationControls: ($which, rotations) ->
 			$which.each((idx, elem) ->
@@ -80,6 +111,7 @@ define(["../button_bar/AbstractButtonBarView",
 			)
 
 		render: () ->
+			@$slidePosCtrls = @$el.find(".slidePosition input")
 			@$slideRotCtrls = @$el.find(".slideRotations input")
 			@partialRender()
 	)

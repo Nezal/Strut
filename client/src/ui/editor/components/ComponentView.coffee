@@ -38,6 +38,7 @@ define(["vendor/backbone",
 
 			@_deltaDrags = []
 
+			@model.on("render", @render, @)
 			@model.on("rerender", @_setUpdatedTransform, @)
 
 		_selectionChanged: (model, selected) ->
