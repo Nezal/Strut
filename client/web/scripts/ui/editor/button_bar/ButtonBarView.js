@@ -19,7 +19,7 @@ define(["./AbstractButtonBarView", "model/editor/button_bar/ButtonBarModel", "mo
     createSlide: function() {
       return this.deck.newSlide();
     },
-    createFrame: function() {
+    imageFile: function() {
       return this.$el.find("input")[0].click();
     },
     textBox: function() {
@@ -82,11 +82,11 @@ define(["./AbstractButtonBarView", "model/editor/button_bar/ButtonBarModel", "mo
       this.model.on("change:fontSize", this._fontSizeChanged, this);
       this.model.on("change:fontFamily", this._fontFamilyChanged, this);
       return this.$el.find("input")[0].addEventListener('change', function(e) {
-        var img, slide, src;
-        slide = _this.deck.newSlide();
+        var activeSlide, img, src;
+        activeSlide = _this.deck.get("activeSlide");
         src = "images/" + e.target.files[0].name;
         img = ComponentFactory.createImage(_this.model.imgConfig(src));
-        slide.add(img);
+        activeSlide.add(img);
         return e.target.value = "";
       }, false);
     },

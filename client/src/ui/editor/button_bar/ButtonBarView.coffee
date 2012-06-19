@@ -19,7 +19,7 @@ define(["./AbstractButtonBarView",
 		createSlide: () ->
 			@deck.newSlide()
 			
-		createFrame: () ->
+		imageFile: () ->
 			@$el.find("input")[0].click()
 
 		textBox: () ->
@@ -75,10 +75,10 @@ define(["./AbstractButtonBarView",
 			@model.on("change:fontSize", @_fontSizeChanged, @)
 			@model.on("change:fontFamily", @_fontFamilyChanged, @)
 			@$el.find("input")[0].addEventListener('change', (e) =>
-				slide = @deck.newSlide()
+				activeSlide = @deck.get("activeSlide")
 				src = "images/" + e.target.files[0].name
 				img = ComponentFactory.createImage(@model.imgConfig(src))
-				slide.add(img)
+				activeSlide.add(img)
 				e.target.value = ""
 			, false)
 
