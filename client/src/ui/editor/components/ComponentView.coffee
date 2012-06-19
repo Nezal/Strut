@@ -15,6 +15,8 @@ define(["vendor/backbone",
 			"mousedown": "mousedown"
 			"click": "clicked"
 			"click .removeBtn": "removeClicked"
+			"change .x": "x"
+			"change .y": "y"
 			"deltadrag span[data-delta='skewX']": "skewX"
 			"deltadrag span[data-delta='skewY']": "skewY"
 			"deltadrag span[data-delta='rotate']": "rotate"
@@ -58,6 +60,22 @@ define(["vendor/backbone",
 		removeClicked: (e) ->
 			e.stopPropagation()
 			@remove()
+			
+		x: (e) ->
+			newX = parseInt(e.target.value)
+			@model.set("x", newX)
+			@$el.css({
+				left: newX
+			})
+			@_prevPos.x = newX
+			
+		y: (e) ->
+			newY = parseInt(e.target.value)
+			@model.set("y", newY)
+			@$el.css({
+				top: newY
+			})
+			@_prevPos.y = newY
 
 		skewX: (e, deltas) ->
 			@model.set("skewX", @_initialSkewX + Math.atan2(deltas.dx, 22))
@@ -195,6 +213,8 @@ define(["vendor/backbone",
 					left: newX
 					top: newY
 				})
+				@$el.find("input")[0].value = newX
+				@$el.find("input")[1].value = newY
 				@_prevPos.x = e.pageX
 				@_prevPos.y = e.pageY
 

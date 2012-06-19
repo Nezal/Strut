@@ -75,3 +75,19 @@
 .component:hover .close-btn-red-20 {
 	display: inline;
 }
+
+.component .position {
+	width: 40px;
+	margin-top: 10px;
+}
+
+.component .positionCtrls {
+	position: absolute;
+	left: 30%;
+	bottom: -40px;
+	visibility: hidden;	
+}
+
+.component.selected .positionCtrls {
+	visibility: visible;
+}

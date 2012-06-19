@@ -12,6 +12,8 @@ define(["vendor/backbone", "ui/widgets/DeltaDragControl", "../Templates", "css!.
         "mousedown": "mousedown",
         "click": "clicked",
         "click .removeBtn": "removeClicked",
+        "change .x": "x",
+        "change .y": "y",
         "deltadrag span[data-delta='skewX']": "skewX",
         "deltadrag span[data-delta='skewY']": "skewY",
         "deltadrag span[data-delta='rotate']": "rotate",
@@ -54,6 +56,24 @@ define(["vendor/backbone", "ui/widgets/DeltaDragControl", "../Templates", "css!.
     removeClicked: function(e) {
       e.stopPropagation();
       return this.remove();
+    },
+    x: function(e) {
+      var newX;
+      newX = parseInt(e.target.value);
+      this.model.set("x", newX);
+      this.$el.css({
+        left: newX
+      });
+      return this._prevPos.x = newX;
+    },
+    y: function(e) {
+      var newY;
+      newY = parseInt(e.target.value);
+      this.model.set("y", newY);
+      this.$el.css({
+        top: newY
+      });
+      return this._prevPos.y = newY;
     },
     skewX: function(e, deltas) {
       this.model.set("skewX", this._initialSkewX + Math.atan2(deltas.dx, 22));
@@ -205,6 +225,8 @@ define(["vendor/backbone", "ui/widgets/DeltaDragControl", "../Templates", "css!.
           left: newX,
           top: newY
         });
+        this.$el.find("input")[0].value = newX;
+        this.$el.find("input")[1].value = newY;
         this._prevPos.x = e.pageX;
         return this._prevPos.y = e.pageY;
       }
