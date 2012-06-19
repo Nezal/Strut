@@ -51,6 +51,7 @@ define(["vendor/backbone", "ui/widgets/DeltaDragControl", "../Templates", "css!.
     clicked: function(e) {
       this.$el.trigger("focused");
       e.stopPropagation();
+      this.$sizeView.innerHTML = this.$content.width() + "x" + this.$content.height();
       return false;
     },
     removeClicked: function(e) {
@@ -117,7 +118,8 @@ define(["vendor/backbone", "ui/widgets/DeltaDragControl", "../Templates", "css!.
       newHeight = contentHeight + deltas.dy;
       scale = (newWidth * newHeight) / (contentWidth * contentHeight) * this._initialScale;
       this.model.set("scale", scale);
-      return this._setUpdatedTransform();
+      this._setUpdatedTransform();
+      return this.$sizeView.innerHTML = newWidth + "x" + newHeight;
     },
     scaleStart: function() {
       return this._initialScale = this.model.get("scale") || 1;
@@ -167,6 +169,11 @@ define(["vendor/backbone", "ui/widgets/DeltaDragControl", "../Templates", "css!.
         return _this._deltaDrags.push(deltaDrag);
       });
       this.$content = this.$el.find(".content");
+      this.$sizeView = this.$el.find(".size")[0];
+      this.$xInput = this.$el.find("input")[0];
+      this.$yInput = this.$el.find("input")[1];
+      this.$xInput.value = this.model.get("x");
+      this.$yInput.value = this.model.get("y");
       this._setUpdatedTransform();
       scale = this.model.get("scale");
       this._selectionChanged(this.model, this.model.get("selected"));
@@ -225,8 +232,8 @@ define(["vendor/backbone", "ui/widgets/DeltaDragControl", "../Templates", "css!.
           left: newX,
           top: newY
         });
-        this.$el.find("input")[0].value = newX;
-        this.$el.find("input")[1].value = newY;
+        this.$xInput.value = newX;
+        this.$yInput.value = newY;
         this._prevPos.x = e.pageX;
         return this._prevPos.y = e.pageY;
       }

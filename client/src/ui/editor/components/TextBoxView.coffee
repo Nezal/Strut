@@ -13,6 +13,7 @@ define(["./ComponentView",
 			myEvents = 
 				"dblclick": "dblclicked"
 				"editComplete": "editCompleted"
+				"keyup": "updateSize"
 			_.extend(parentEvents, myEvents)
 
 		initialize: () ->
@@ -38,6 +39,10 @@ define(["./ComponentView",
 				@$el.find(".content").attr("contenteditable", false)
 				@allowDragging = true
 
+				
+		updateSize: () ->
+			@$sizeView.innerHTML = @$content.width() + "x" + @$content.height()
+			
 		_styleChanged: (model, style, opts) ->
 			for key,value of opts.changes
 				if value

@@ -55,6 +55,7 @@ define(["vendor/backbone",
 		clicked: (e) ->
 			@$el.trigger("focused")
 			e.stopPropagation()
+			@$sizeView.innerHTML = @$content.width() + "x" + @$content.height()
 			false
 
 		removeClicked: (e) ->
@@ -114,11 +115,13 @@ define(["vendor/backbone",
 			contentHeight = @$content.height()
 			newWidth = contentWidth + deltas.dx
 			newHeight = contentHeight + deltas.dy
-
+			
 			scale = (newWidth*newHeight) / (contentWidth*contentHeight) * @_initialScale
 
 			@model.set("scale", scale)
 			@_setUpdatedTransform()
+			
+			@$sizeView.innerHTML = newWidth + "x" + newHeight
 
 		scaleStart: () ->
 			@_initialScale = @model.get("scale") || 1
@@ -159,9 +162,14 @@ define(["vendor/backbone",
 				@_deltaDrags.push(deltaDrag)
 			)
 			@$content = @$el.find(".content")
+			@$sizeView = @$el.find(".size")[0]
+			@$xInput = @$el.find("input")[0]
+			@$yInput = @$el.find("input")[1]
+			@$xInput.value = @model.get("x")
+			@$yInput.value = @model.get("y")
 			@_setUpdatedTransform()
 			scale = @model.get("scale")
-
+				
 			@_selectionChanged(@model, @model.get("selected"))
 
 			@$el
@@ -213,8 +221,8 @@ define(["vendor/backbone",
 					left: newX
 					top: newY
 				})
-				@$el.find("input")[0].value = newX
-				@$el.find("input")[1].value = newY
+				@$xInput.value = newX
+				@$yInput.value = newY
 				@_prevPos.x = e.pageX
 				@_prevPos.y = e.pageY
 

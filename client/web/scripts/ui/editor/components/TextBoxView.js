@@ -14,7 +14,8 @@ define(["./ComponentView", "../Templates"], function(ComponentView, Templates) {
       parentEvents = ComponentView.prototype.events.call(this);
       myEvents = {
         "dblclick": "dblclicked",
-        "editComplete": "editCompleted"
+        "editComplete": "editCompleted",
+        "keyup": "updateSize"
       };
       return _.extend(parentEvents, myEvents);
     },
@@ -46,6 +47,9 @@ define(["./ComponentView", "../Templates"], function(ComponentView, Templates) {
         this.$el.find(".content").attr("contenteditable", false);
         return this.allowDragging = true;
       }
+    },
+    updateSize: function() {
+      return this.$sizeView.innerHTML = this.$content.width() + "x" + this.$content.height();
     },
     _styleChanged: function(model, style, opts) {
       var key, value, _ref, _results;

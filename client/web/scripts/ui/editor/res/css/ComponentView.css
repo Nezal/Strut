@@ -28,6 +28,7 @@
 	right: -35px;
 	bottom: -25px;
 	cursor: se-resize;
+	z-index: 2;
 	transform: rotate(45deg);
 	-moz-transform: rotate(45deg);
 	-webkit-transform: rotate(45deg);
@@ -76,18 +77,28 @@
 	display: inline;
 }
 
-.component .position {
+.component .positionCtrls {
+	position: absolute;
+	width: 300px;
+	left: 30%;
+	bottom: -85px;
+	z-index: 1;
+}
+
+.component .sub {
+	visibility: hidden;	
+}
+
+.component.selected .sub {
+	visibility: visible;
+}
+
+.position {
 	width: 40px;
 	margin-top: 10px;
 }
 
-.component .positionCtrls {
-	position: absolute;
-	left: 30%;
-	bottom: -40px;
-	visibility: hidden;	
-}
-
-.component.selected .positionCtrls {
-	visibility: visible;
+.size {
+	font-size: 14px;
+	vertical-align: middle;
 }
