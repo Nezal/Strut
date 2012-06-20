@@ -12,8 +12,8 @@ define(["vendor/backbone", "ui/widgets/DeltaDragControl", "../Templates", "css!.
         "mousedown": "mousedown",
         "click": "clicked",
         "click .removeBtn": "removeClicked",
-        "change .x": "x",
-        "change .y": "y",
+        "change .position[data-name='x']": "translateX",
+        "change .position[data-name='y']": "translateY",
         "deltadrag span[data-delta='skewX']": "skewX",
         "deltadrag span[data-delta='skewY']": "skewY",
         "deltadrag span[data-delta='rotate']": "rotate",
@@ -51,14 +51,13 @@ define(["vendor/backbone", "ui/widgets/DeltaDragControl", "../Templates", "css!.
     clicked: function(e) {
       this.$el.trigger("focused");
       e.stopPropagation();
-      this.$sizeView.innerHTML = this.$content.width() + "x" + this.$content.height();
       return false;
     },
     removeClicked: function(e) {
       e.stopPropagation();
       return this.remove();
     },
-    x: function(e) {
+    translateX: function(e) {
       var newX;
       newX = parseInt(e.target.value);
       this.model.set("x", newX);
@@ -67,7 +66,7 @@ define(["vendor/backbone", "ui/widgets/DeltaDragControl", "../Templates", "css!.
       });
       return this._prevPos.x = newX;
     },
-    y: function(e) {
+    translateY: function(e) {
       var newY;
       newY = parseInt(e.target.value);
       this.model.set("y", newY);
@@ -154,10 +153,11 @@ define(["vendor/backbone", "ui/widgets/DeltaDragControl", "../Templates", "css!.
       this.model.set("selected", true);
       this.$el.css("zIndex", zTracker.next());
       this._dragging = true;
-      return this._prevPos = {
+      this._prevPos = {
         x: e.pageX,
         y: e.pageY
       };
+      return this.$sizeView.innerHTML = this.$content.width() + "x" + this.$content.height();
     },
     render: function() {
       var scale,
@@ -169,9 +169,9 @@ define(["vendor/backbone", "ui/widgets/DeltaDragControl", "../Templates", "css!.
         return _this._deltaDrags.push(deltaDrag);
       });
       this.$content = this.$el.find(".content");
-      this.$sizeView = this.$el.find(".size")[0];
-      this.$xInput = this.$el.find("input")[0];
-      this.$yInput = this.$el.find("input")[1];
+      this.$sizeView = this.$el.find(".size")[0] || {};
+      this.$xInput = this.$el.find(".position[data-name='x']")[0] || {};
+      this.$yInput = this.$el.find(".position[data-name='y']")[0] || {};
       this.$xInput.value = this.model.get("x");
       this.$yInput.value = this.model.get("y");
       this._setUpdatedTransform();

@@ -4,11 +4,11 @@
 <span class="rightLabel label" data-delta="rotate">Rotate</span>
 <span class="scale label" data-delta="scale">Scale</span>
 <span class="close-btn-red-20 removeBtn" title="Remove"></span>
-<div class="positionCtrls sub">
+<div class="positioningCtrls sub">
 	<span class="label">size</span>
 	<span class="size"></span>
 	<span class="label">x</span>
-	<input class="position x" type="text" date-option="x"/>
+	<input class="position" type="text" data-name="x"/>
 	<span class="label">y</span>
-	<input class="position y" type="text" date-option="y"/>
+	<input class="position" type="text" data-name="y"/>
 </div>

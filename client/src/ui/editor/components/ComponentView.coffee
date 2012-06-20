@@ -15,8 +15,8 @@ define(["vendor/backbone",
 			"mousedown": "mousedown"
 			"click": "clicked"
 			"click .removeBtn": "removeClicked"
-			"change .x": "x"
-			"change .y": "y"
+			"change .position[data-name='x']": "translateX"
+			"change .position[data-name='y']": "translateY"
 			"deltadrag span[data-delta='skewX']": "skewX"
 			"deltadrag span[data-delta='skewY']": "skewY"
 			"deltadrag span[data-delta='rotate']": "rotate"
@@ -55,14 +55,13 @@ define(["vendor/backbone",
 		clicked: (e) ->
 			@$el.trigger("focused")
 			e.stopPropagation()
-			@$sizeView.innerHTML = @$content.width() + "x" + @$content.height()
 			false
 
 		removeClicked: (e) ->
 			e.stopPropagation()
 			@remove()
 			
-		x: (e) ->
+		translateX: (e) ->
 			newX = parseInt(e.target.value)
 			@model.set("x", newX)
 			@$el.css({
@@ -70,7 +69,7 @@ define(["vendor/backbone",
 			})
 			@_prevPos.x = newX
 			
-		y: (e) ->
+		translateY: (e) ->
 			newY = parseInt(e.target.value)
 			@model.set("y", newY)
 			@$el.css({
@@ -154,6 +153,7 @@ define(["vendor/backbone",
 				x: e.pageX
 				y: e.pageY
 			}
+			@$sizeView.innerHTML = @$content.width() + "x" + @$content.height()
 
 		render: () ->
 			@$el.html(@__getTemplate()(@model.attributes))
@@ -162,9 +162,9 @@ define(["vendor/backbone",
 				@_deltaDrags.push(deltaDrag)
 			)
 			@$content = @$el.find(".content")
-			@$sizeView = @$el.find(".size")[0]
-			@$xInput = @$el.find("input")[0]
-			@$yInput = @$el.find("input")[1]
+			@$sizeView = @$el.find(".size")[0] || {}
+			@$xInput = @$el.find(".position[data-name='x']")[0] || {}
+			@$yInput = @$el.find(".position[data-name='y']")[0] || {}
 			@$xInput.value = @model.get("x")
 			@$yInput.value = @model.get("y")
 			@_setUpdatedTransform()
